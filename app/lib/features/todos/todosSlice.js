@@ -84,9 +84,7 @@ const todosSlice = createSlice({
       };
 
       state.localTodos.push(newTodo);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("todos", JSON.stringify(state.localTodos));
-      }
+      localStorage.setItem("todos", JSON.stringify(state.localTodos));
     },
 
     editLocalTodo: (state, action) => {
@@ -103,7 +101,7 @@ const todosSlice = createSlice({
       });
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("todos", JSON.stringify(state.localTodos));
+        localStorage.setItem("todos", JSON.stringify(updatedTodos));
       }
     },
 

@@ -5,6 +5,7 @@ import { getLatestTasks } from "@/app/utils/getLatestTasks";
 import { Poppins } from "next/font/google";
 import Card from "../todos/cards";
 import { CreateTodo } from "../todos/buttons";
+import { useEffect, useState } from "react";
 
 const poppins = Poppins({
   weight: "400",
@@ -15,7 +16,18 @@ const LatestTasks = () => {
   const { todos: serverTodos } = useTodos(); // get todosfrom the api
   const localTodos = useAppSelector(selectAllLocalTodos); // get todos from localstorage
   const allTodos = localTodos.concat(serverTodos); // combine all todos
-  const latestTasks = getLatestTasks(allTodos); // get the latest todos
+  const [latestTasks, setLatestTasks] = useState([]);
+
+  useEffect(() => {
+    const newLatestTasks = getLatestTasks(allTodos);
+    // Update state only if latestTasks has actually changed to avoid unnecessary re-renders
+    if (JSON.stringify(latestTasks) !== JSON.stringify(newLatestTasks)) {
+      setLatestTasks(newLatestTasks);
+    }
+  }, [allTodos, latestTasks]);
+
+  // Load local todos on initial render
+
   return (
     <section
       className={`bg-white rounded-lg w-full py-7 px-7 ${poppins.className}`}

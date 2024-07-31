@@ -5,19 +5,23 @@ import {
   selectAllLocalTodos,
 } from "@/app/lib/features/todos/todosSlice";
 import { useAppDispatch, useTodos } from "@/app/lib/hook";
-import Paginate from "@/app/ui/dashboard/paginate";
-import Card from "@/app/ui/todos/cards";
-import { generatePagination } from "@/app/utils/generatePagination";
-import clsx from "clsx";
+import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+const PaginateNOSSR = dynamic(() => import("@/app/ui/dashboard/paginate"), {
+  ssr: false,
+});
+
+const CardNOSSR = dynamic(() => import("@/app/ui/todos/cards"), {
+  ssr: false,
+});
 
 const Page = () => {
-  const { todos } = useTodos();
+  const { todos: serverTodos } = useTodos();
   const localTodos = useSelector(selectAllLocalTodos);
-  const allTodos = localTodos.concat(todos);
+  const [allTodos, setAllTodos] = useState([]);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,9 +30,16 @@ const Page = () => {
   const params = new URLSearchParams(searchParams);
   useEffect(() => {
     dispatch(loadLocalTodos());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setAllTodos(localTodos.concat(serverTodos));
+  }, [localTodos, serverTodos]);
+
+  useEffect(() => {
     params.set("page", page ? page : "1");
     router.push(`${pathname}?${params.toString()}`);
-  }, [dispatch, router]);
+  }, [router]);
 
   const slicedTodos = allTodos.slice(
     Number(page) === 1 ? 0 : Number(page),
@@ -38,13 +49,16 @@ const Page = () => {
     <main className="flex py-5  flex-col gap-4 px-6">
       <h1 className="text-xl font-semibold text-black">Todos {}</h1>
       <div className="flex flex-col gap-6 md:grid md:grid-cols-2  lg:gap-4 lg:grid-cols-3 lg:grid-rows-2">
-        {slicedTodos.map((todo) => (
-          <Card key={todo.uuid} {...todo} showDelete />
-        ))}
+        <Suspense fallback={<div>Loading todos...</div>}>
+          {slicedTodos.map((todo) => (
+            <CardNOSSR key={todo.uuid} {...todo} showDelete />
+          ))}
+        </Suspense>
+        todo
       </div>
 
-      <Suspense fallback={<h1>Pagination...</h1>}>
-        <Paginate length={allTodos.length} />
+      <Suspense>
+        <PaginateNOSSR length={allTodos.length} />
       </Suspense>
     </main>
   );
