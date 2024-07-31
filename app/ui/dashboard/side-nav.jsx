@@ -18,12 +18,12 @@ const SideNav = () => {
       role="sidebar"
       className={`px-5 flex flex-col gap-5 rounded-lg py-3 bg-gray-200 border-2 border-gray-300 md:w-1/4 ${poppins.className}`}
     >
-      <div className="flex items-center justify-between md:block">
+      <div className="flex flex-col items-center justify-between md:block">
         <h1 className="text-black font-semibold text-xl py-3 px-2 border-b-2 border-b-gray-600 border-opacity-40">
           Tasker
         </h1>
 
-        <div className="bg-white w-6/12 rounded-lg py-3 px-3 md:hidden">
+        <div className="bg-white w-full rounded-lg py-3 px-3 mt-4 md:hidden">
           <Search />
         </div>
       </div>

@@ -28,13 +28,16 @@ export default function Home() {
           </h1>
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-5 justify-center">
-            <Link href={"/dashboard"} className="border rounded-md px-8 py-2">
+            <Link
+              href={"/dashboard"}
+              className="border rounded-md px-8 py-2 md:text-lg"
+            >
               Go straight to your Dashboard
             </Link>
 
             <Link
               href={"/dashboard/todos"}
-              className="bg-slate-950  rounded-md text-white py-2 px-5 font-medium "
+              className="bg-slate-950  rounded-md text-white py-2 px-5 font-medium md:text-lg "
             >
               Your Todos
             </Link>

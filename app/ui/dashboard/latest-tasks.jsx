@@ -30,9 +30,9 @@ const LatestTasks = () => {
 
   return (
     <section
-      className={`bg-white rounded-lg w-full py-7 px-7 ${poppins.className}`}
+      className={`bg-white rounded-lg w-full py-10 md:py-8 px-7 ${poppins.className}`}
     >
-      <div className="flex items-center mb-5 w-full justify-between">
+      <div className="flex flex-col items-center gap-3 mb-7 w-full justify-between md:mb-5 md:gap-0 md:flex-row">
         <h1 className="text-2xl font-semibold ">Latest Tasks</h1>
         <CreateTodo />
       </div>

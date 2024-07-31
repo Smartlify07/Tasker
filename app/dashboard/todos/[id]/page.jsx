@@ -20,7 +20,7 @@ const Page = ({ params }) => {
   const router = useRouter();
 
   return (
-    <main className="flex flex-col items-center justify-center w-11/12  ">
+    <main className="flex flex-col items-center justify-center w-full md:w-11/12  ">
       <div className="bg-gray-100 rounded-sm py-20 w-10/12 md:w-1/2 flex flex-col items-center px-6 border-black shadow-lg bg-gradient-to-r from-gray-100 to-gray-50">
         {todo ? (
           <>
