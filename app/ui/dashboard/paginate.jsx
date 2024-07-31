@@ -1,7 +1,7 @@
+"use client";
 import { generatePagination } from "@/app/utils/generatePagination";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
 const Paginate = ({ length }) => {
   const searchParams = useSearchParams();

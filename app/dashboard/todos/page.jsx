@@ -11,7 +11,7 @@ import { generatePagination } from "@/app/utils/generatePagination";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const Page = () => {
@@ -43,7 +43,9 @@ const Page = () => {
         ))}
       </div>
 
-      <Paginate length={allTodos.length} />
+      <Suspense fallback={<h1>Pagination...</h1>}>
+        <Paginate length={allTodos.length} />
+      </Suspense>
     </main>
   );
 };
