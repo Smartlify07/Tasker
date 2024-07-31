@@ -1,3 +1,4 @@
+"use client";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
@@ -5,7 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 const API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 const initialState = {
-  localTodos: JSON.parse(localStorage.getItem("todos")) || [],
+  localTodos:
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("todos")) || []
+      : [],
   todos: [],
   todosStatus: "idle",
   todosError: null,
@@ -80,8 +84,9 @@ const todosSlice = createSlice({
       };
 
       state.localTodos.push(newTodo);
-
-      localStorage.setItem("todos", JSON.stringify(state.localTodos));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("todos", JSON.stringify(state.localTodos));
+      }
     },
 
     editLocalTodo: (state, action) => {
@@ -97,7 +102,9 @@ const todosSlice = createSlice({
         }
       });
 
-      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("todos", JSON.stringify(state.localTodos));
+      }
     },
 
     deleteLocalTodo: (state, action) => {
@@ -105,7 +112,9 @@ const todosSlice = createSlice({
         (todo) => todo.uuid !== action.payload.uuid
       );
       state.localTodos = updatedTodos;
-      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("todos", JSON.stringify(state.localTodos));
+      }
     },
   },
   extraReducers(builder) {
@@ -170,7 +179,10 @@ export const { addLocalTodo, editLocalTodo, setLocalTodos, deleteLocalTodo } =
   todosSlice.actions;
 
 export const loadLocalTodos = () => (dispatch) => {
-  const localTodos = JSON.parse(localStorage.getItem("todos")) || [];
-  dispatch(setLocalTodos(localTodos));
+  if (typeof window !== "undefined") {
+    const localTodos = JSON.parse(localStorage.getItem("todos")) || [];
+    dispatch(setLocalTodos(localTodos));
+  }
 };
+
 export default todosSlice.reducer;
