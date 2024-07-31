@@ -54,10 +54,9 @@ const Page = () => {
             <CardNOSSR key={todo.uuid} {...todo} showDelete />
           ))}
         </Suspense>
-        todo
       </div>
 
-      <Suspense>
+      <Suspense fallback={<div>Pagination</div>}>
         <PaginateNOSSR length={allTodos.length} />
       </Suspense>
     </main>
