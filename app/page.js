@@ -15,8 +15,6 @@ const poppinsLight = Roboto({
 export default function Home() {
   return (
     <>
-      <Navbar />
-
       <main className="gradient min-h-screen flex flex-col justify-center overflow-y-auto ">
         <section
           className={`   self-center gap-5 py-20 md:w-10/12 md:py-20 ${poppinsLight.className}`}
